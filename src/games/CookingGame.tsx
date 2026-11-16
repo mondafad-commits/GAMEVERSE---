@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
-import { ArrowRight, ChefHat, Check, RotateCcw, Sparkles, Trophy } from 'lucide-react';
+import { useMemo, useState, type CSSProperties } from 'react';
+import { ArrowRight, Check, RotateCcw, Sparkles } from 'lucide-react';
 
 type Recipe = { name:string; emoji:string; ingredients:string[]; steps:string[]; color:string };
 const recipes:Recipe[] = [
@@ -41,4 +41,4 @@ export default function CookingGame({onBack}:{onBack:()=>void}) {
     </section>
   </div>;
 }
-function btn(background:string):React.CSSProperties { return {display:'inline-flex',alignItems:'center',gap:8,border:0,borderRadius:13,padding:'11px 15px',background,color:'#fff',font:'inherit',fontSize:12,fontWeight:600,cursor:'pointer'}; }
+function btn(background:string):CSSProperties { return {display:'inline-flex',alignItems:'center',gap:8,border:0,borderRadius:13,padding:'11px 15px',background,color:'#fff',font:'inherit',fontSize:12,fontWeight:600,cursor:'pointer'}; }
