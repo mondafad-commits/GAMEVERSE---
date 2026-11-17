@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FashionGame from './games/FashionGame';
 import JewelGame from './games/JewelGame';
 import CookingGame from './games/CookingGame';
+import RaceGame from './games/RaceGame';
 import { Gamepad2, Sparkles, Trophy, Users, Star, Search, Crown, Play, Heart, Puzzle, Palette, ChefHat, Zap } from 'lucide-react';
 const games=[{id:1,title:'مملكة الأزياء',category:'إبداع',players:'1–4 لاعبات',art:'👗',tone:'pink',tag:'الأكثر شعبية'},{id:2,title:'تحدي الطبخ',category:'طبخ',players:'1–4 لاعبات',art:'🧁',tone:'orange',tag:'جديد'},{id:3,title:'لغز الجواهر',category:'ألغاز',players:'1–2 لاعبتان',art:'💎',tone:'blue'},{id:4,title:'سباق النجوم',category:'مغامرة',players:'2–6 لاعبات',art:'🏎️',tone:'purple',tag:'جماعي'},{id:5,title:'استوديو الرسم',category:'إبداع',players:'1–4 لاعبات',art:'🎨',tone:'mint'},{id:6,title:'جزيرة الحيوانات',category:'مغامرة',players:'1–4 لاعبات',art:'🦊',tone:'gold'}];
 const filters=['الكل','إبداع','طبخ','ألغاز','مغامرة'];
