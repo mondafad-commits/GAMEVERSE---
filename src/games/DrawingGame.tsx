@@ -15,6 +15,30 @@ export default function DrawingGame({ onBack }: { onBack: () => void }) {
     setItems(old => [...old,{id:Date.now()+old.length,emoji:sticker,x,y,size:34+(old.length%3)*8}]);
   };
   const reset = () => setItems([]);
+  const saveArtwork = () => {
+    const safeTitle = (title || 'لوحتي الجميلة').replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char] || char));
+    const decorations = items.map(item =>
+      `<text x="${item.x * 8}" y="${55 + item.y * 4.3}" text-anchor="middle" dominant-baseline="middle" font-size="${item.size * 1.35}">${item.emoji}</text>`
+    ).join('');
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="520" viewBox="0 0 800 520">
+      <rect width="800" height="520" rx="28" fill="${color}22"/>
+      <text x="400" y="48" text-anchor="middle" font-family="sans-serif" font-size="30" font-weight="bold" fill="#5b426b">${safeTitle}</text>
+      <circle cx="155" cy="150" r="58" fill="${color}"/>
+      <text x="650" y="170" text-anchor="middle" font-size="76">☁️</text>
+      <text x="315" y="250" text-anchor="middle" font-size="56">☁️</text>
+      <path d="M0 410 Q180 270 390 410 T800 400 V520 H0Z" fill="#8ad5b2"/>
+      <path d="M430 420 Q610 285 800 390 V520 H430Z" fill="#78b9a6"/>
+      ${decorations}
+    </svg>`;
+    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'لوحتي-الجميلة.svg';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
   return <div className="drawing-game" dir="rtl">
     <header className="drawing-top">
       <button onClick={onBack}><ArrowRight size={17}/> رجوع للمكتبة</button>
@@ -41,9 +65,9 @@ export default function DrawingGame({ onBack }: { onBack: () => void }) {
         <div><h3>💫 الملصقات</h3><div className="drawing-stickers">{stickers.map(s=><button key={s} onClick={()=>setSticker(s)} className={sticker===s?'active':''}>{s}</button>)}</div></div>
         <div className="drawing-selected">الملصق المختار: <b>{sticker}</b></div>
         <button className="drawing-add" onClick={add}><Sparkles size={17}/> أضيفي إلى لوحتي</button>
-        <button className="drawing-reset" onClick={reset}><RotateCcw size={15}/> لوحة جديدة</button>
+        <button className="drawing-reset" onClick={reset}><RotateCcw size={15}/> لوحة جديدة</button>\n        <button className="drawing-reset" onClick={saveArtwork}><Download size={15}/> احفظي لوحتي</button>
       </section>
     </div>
-    <p className="drawing-note">لوحتك تتكوّن داخل اللعبة ويمكنك تعديلها في أي وقت 💜</p>
+    <p className="drawing-note">احفظي لوحتك كصورة وشاركيها مع العائلة والصديقات 💜</p>
   </div>;
 }
