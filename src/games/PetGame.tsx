@@ -1,105 +1,96 @@
 import { useState } from 'react';
-import { ArrowRight, RotateCcw, Trophy } from 'lucide-react';
+import { ArrowRight, Heart, Utensils, Sparkles, Droplets, RotateCcw } from 'lucide-react';
 
-const animals = [
-  { id: 'cat', emoji: '🐱', name: 'القطة' },
-  { id: 'fox', emoji: '🦊', name: 'الثعلب' },
-  { id: 'panda', emoji: '🐼', name: 'الباندا' },
-  { id: 'rabbit', emoji: '🐰', name: 'الأرنب' },
-  { id: 'lion', emoji: '🦁', name: 'الأسد' },
-  { id: 'koala', emoji: '🐨', name: 'الكوالا' },
+const pets = [
+  { id: 'cat', emoji: '🐱', name: 'لولو القطة' },
+  { id: 'fox', emoji: '🦊', name: 'فوفو الثعلب' },
+  { id: 'panda', emoji: '🐼', name: 'بندق الباندا' },
+  { id: 'rabbit', emoji: '🐰', name: 'مشمش الأرنب' },
+  { id: 'koala', emoji: '🐨', name: 'كوكو الكوالا' },
 ];
 
-type Card = { key: number; id: string; emoji: string; name: string };
-
-function makeDeck(): Card[] {
-  const deck = [...animals, ...animals].map((animal, key) => ({ ...animal, key }));
-  // Fisher–Yates gives every new round a properly shuffled deck.
-  for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [deck[i], deck[j]] = [deck[j], deck[i]];
-  }
-  return deck;
-}
+const initialNeeds = { hunger: 65, happiness: 55, cleanliness: 75, energy: 70 };
+type Needs = typeof initialNeeds;
 
 export default function PetGame({ onBack }: { onBack: () => void }) {
-  const [cards, setCards] = useState<Card[]>(makeDeck);
-  const [opened, setOpened] = useState<number[]>([]);
-  const [matched, setMatched] = useState<number[]>([]);
-  const [moves, setMoves] = useState(0);
-  const [busy, setBusy] = useState(false);
+  const [pet, setPet] = useState(0);
+  const [needs, setNeeds] = useState<Needs>({ ...initialNeeds });
+  const [message, setMessage] = useState('مرحباً! أنا أنتظر صديقتي الجديدة 💜');
+  const [careCount, setCareCount] = useState(0);
 
-  const choose = (index: number) => {
-    if (busy || opened.includes(index) || matched.includes(index) || opened.length >= 2) return;
+  const care = (kind: keyof Needs, amount: number, text: string) => {
+    setNeeds(old => ({ ...old, [kind]: Math.min(100, Math.max(0, old[kind] + amount)) }));
+    setMessage(text);
+    setCareCount(value => value + 1);
+  };
 
-    if (opened.length === 0) {
-      setOpened([index]);
-      return;
-    }
-
-    const first = opened[0];
-    setOpened([first, index]);
-    setMoves(value => value + 1);
-
-    if (cards[first].id === cards[index].id) {
-      setMatched(previous => [...previous, first, index]);
-      setOpened([]);
-    } else {
-      setBusy(true);
-      window.setTimeout(() => {
-        setOpened([]);
-        setBusy(false);
-      }, 850);
-    }
+  const changePet = (index: number) => {
+    setPet(index);
+    setNeeds({ ...initialNeeds });
+    setCareCount(0);
+    setMessage('اختيار جميل! هيا نعتني بصديقنا الجديد 🌷');
   };
 
   const reset = () => {
-    setCards(makeDeck());
-    setOpened([]);
-    setMatched([]);
-    setMoves(0);
-    setBusy(false);
+    setNeeds({ ...initialNeeds });
+    setCareCount(0);
+    setMessage('عاد صديقك نشيطاً وسعيداً، هيا نبدأ من جديد!');
   };
 
-  const complete = matched.length === cards.length;
+  const bars: { key: keyof Needs; label: string; emoji: string; color: string }[] = [
+    { key: 'hunger', label: 'الشبع', emoji: '🍎', color: '#f0a34c' },
+    { key: 'happiness', label: 'السعادة', emoji: '💖', color: '#e77eb3' },
+    { key: 'cleanliness', label: 'النظافة', emoji: '🫧', color: '#72bce8' },
+    { key: 'energy', label: 'النشاط', emoji: '⚡', color: '#9b83dc' },
+  ];
 
   return (
-    <div style={{ maxWidth: 900, margin: '24px auto', padding: 20, color: '#46345c' }}>
+    <div dir="rtl" style={{ maxWidth: 900, margin: '24px auto', padding: 18, color: '#46345c' }}>
       <button onClick={onBack} style={{ border: 0, borderRadius: 14, padding: '10px 16px', background: '#f2e8ff', color: '#6945a0', fontWeight: 800, cursor: 'pointer', display: 'flex', gap: 8, alignItems: 'center' }}>
         <ArrowRight size={17}/> رجوع للمكتبة
       </button>
-      <div style={{ textAlign: 'center', padding: '20px 8px' }}>
-        <div style={{ fontSize: 42 }}>🦊 🐼 🐰</div>
-        <h2 style={{ fontSize: 28, margin: '8px 0' }}>جزيرة الحيوانات</h2>
-        <p style={{ margin: 0, color: '#806d94' }}>اقلبِي البطاقات واكتشفي كل حيوانين متشابهين!</p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 16, flexWrap: 'wrap' }}>
-          <span style={{ background: '#f5edff', padding: '8px 14px', borderRadius: 20 }}>⭐ الأزواج: {matched.length / 2} / 6</span>
-          <span style={{ background: '#eaf8f2', padding: '8px 14px', borderRadius: 20 }}>🎯 المحاولات: {moves}</span>
-        </div>
+      <header style={{ textAlign: 'center', padding: '18px 8px 8px' }}>
+        <div style={{ fontSize: 38 }}>🏝️ 🐾 🌴</div>
+        <h2 style={{ margin: '8px 0', fontSize: 28 }}>جزيرة الحيوانات</h2>
+        <p style={{ margin: 0, color: '#806d94' }}>اختاري حيوانك الأليف واعتني به حتى يصبح سعيداً!</p>
+      </header>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 9, flexWrap: 'wrap', margin: '18px 0' }}>
+        {pets.map((item, index) => (
+          <button key={item.id} onClick={() => changePet(index)} aria-pressed={pet === index}
+            style={{ border: pet === index ? '2px solid #9a70d0' : '2px solid #eadcfb', borderRadius: 16, padding: '9px 12px', background: pet === index ? '#f2e8ff' : '#fff', cursor: 'pointer', fontWeight: 800, color: '#604779' }}>
+            <span style={{ fontSize: 25 }}>{item.emoji}</span><br/><small>{item.name}</small>
+          </button>
+        ))}
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,minmax(0,1fr))', gap: 10, maxWidth: 560, margin: '0 auto' }}>
-        {cards.map((card, index) => {
-          const visible = opened.includes(index) || matched.includes(index);
-          return (
-            <button key={card.key} onClick={() => choose(index)} aria-label={visible ? card.name : 'بطاقة مخفية'} aria-pressed={visible}
-              style={{ aspectRatio: '1', border: matched.includes(index) ? '2px solid #75c9a5' : '2px solid #eadcfb', borderRadius: 18, background: visible ? '#fff' : 'linear-gradient(145deg,#c8a8f4,#f4c5e6)', fontSize: 'clamp(26px,7vw,48px)', cursor: 'pointer', boxShadow: '0 5px 14px #5a3b7715' }}>
-              {visible ? card.emoji : '✨'}
-            </button>
-          );
-        })}
-      </div>
-      {complete && (
-        <div role="status" style={{ textAlign: 'center', padding: 20, marginTop: 18, background: '#effaf4', borderRadius: 18 }}>
-          <Trophy size={34}/>
-          <h3 style={{ fontSize: 22, margin: '8px 0' }}>أحسنتِ يا بطلة الجزيرة!</h3>
-          <p>وجدتِ كل الحيوانات في {moves} محاولة ⭐⭐⭐</p>
+      <section style={{ background: 'linear-gradient(145deg,#e7f8ed,#f8e6f6)', borderRadius: 28, padding: 22, textAlign: 'center', maxWidth: 680, margin: '0 auto', boxShadow: '0 8px 24px #60477912' }}>
+        <div style={{ fontSize: 100, lineHeight: 1.35 }}>{pets[pet].emoji}</div>
+        <h3 style={{ fontSize: 23, margin: '4px 0 8px' }}>{pets[pet].name}</h3>
+        <p role="status" style={{ minHeight: 28, margin: '0 0 18px', color: '#765d8b', fontWeight: 700 }}>{message}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(125px,1fr))', gap: 12, textAlign: 'right' }}>
+          {bars.map(bar => (
+            <div key={bar.key} style={{ background: '#ffffffd9', padding: 12, borderRadius: 15 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: 13 }}><span>{bar.emoji} {bar.label}</span><span>{needs[bar.key]}%</span></div>
+              <div style={{ height: 9, borderRadius: 20, background: '#eee7f3', marginTop: 9, overflow: 'hidden' }}>
+                <div style={{ width: needs[bar.key] + '%', height: '100%', borderRadius: 20, background: bar.color, transition: 'width .25s' }}/>
+              </div>
+            </div>
+          ))}
         </div>
-      )}
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 18 }}>
-        <button onClick={reset} style={{ border: 0, borderRadius: 14, padding: '12px 18px', background: '#7c54b5', color: 'white', fontWeight: 800, cursor: 'pointer', display: 'flex', gap: 8, alignItems: 'center' }}>
-          <RotateCcw size={16}/> ابدئي جولة جديدة
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(125px,1fr))', gap: 10, marginTop: 20 }}>
+          <button onClick={() => care('hunger', 22, 'لذيذ! شكراً على الطعام 🍎')} style={actionStyle}><Utensils size={18}/> أطعميه</button>
+          <button onClick={() => care('happiness', 22, 'يا لها من لعبة ممتعة! 🎾')} style={actionStyle}><Heart size={18}/> العبي معه</button>
+          <button onClick={() => care('cleanliness', 24, 'أصبح نظيفاً ولامعاً! 🫧')} style={actionStyle}><Droplets size={18}/> نظّفيه</button>
+          <button onClick={() => care('energy', 20, 'وقت الراحة أعاده نشيطاً! 🌙')} style={actionStyle}><Sparkles size={18}/> وقت الراحة</button>
+        </div>
+        <div style={{ marginTop: 16, color: '#765d8b', fontWeight: 800 }}>🌟 مرات الاعتناء بصديقك: {careCount}</div>
+      </section>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: 16 }}>
+        <button onClick={reset} style={{ border: 0, borderRadius: 14, padding: '11px 17px', background: '#7c54b5', color: 'white', fontWeight: 800, cursor: 'pointer', display: 'flex', gap: 8, alignItems: 'center' }}>
+          <RotateCcw size={16}/> إعادة النشاط
         </button>
       </div>
     </div>
   );
 }
+
+const actionStyle = { border: 0, borderRadius: 15, padding: '13px 10px', background: '#fff', color: '#684a83', fontWeight: 800, cursor: 'pointer', display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'center' } as const;
