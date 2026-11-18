@@ -37,12 +37,12 @@ export default function RaceGame({ onBack }: Props) {
         <div className="race-track">
           <div className="race-lane">
             <span className="race-name">أنتِ ⭐</span>
-            <div className="race-road"><span className="race-car" style={{ right: `${player}%` }}>🏎️</span></div>
+            <div className="race-road"><span className="race-car" style={{ left: `${player}%` }}>🏎️</span></div>
             <b>{player}%</b>
           </div>
           <div className="race-lane">
             <span className="race-name">المنافسة 💜</span>
-            <div className="race-road"><span className="race-car rival" style={{ right: `${rival}%` }}>🚙</span></div>
+            <div className="race-road"><span className="race-car rival" style={{ left: `${rival}%` }}>🚙</span></div>
             <b>{rival}%</b>
           </div>
           <div className="race-finish">🏁 خط النهاية</div>
