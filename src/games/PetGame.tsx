@@ -55,11 +55,11 @@ export default function PetGame({ onBack }: { onBack: () => void }) {
       <button onClick={onBack} style={{ border: 0, borderRadius: 14, padding: '10px 16px', background: '#f2e8ff', color: '#6945a0', fontWeight: 800, cursor: 'pointer', display: 'flex', gap: 8, alignItems: 'center' }}>
         <ArrowRight size={17}/> رجوع للمكتبة
       </button>
-      <header style={{ textAlign: 'center', padding: '18px 8px 8px' }}>
+      <div style={{ textAlign: 'center', padding: '18px 8px 8px' }}>
         <div style={{ fontSize: 38 }}>🏝️ 🐾 🌴</div>
         <h2 style={{ margin: '8px 0', fontSize: 28 }}>جزيرة الحيوانات</h2>
         <p style={{ margin: 0, color: '#806d94' }}>اختاري حيوانك الأليف واعتني به حتى يصبح سعيداً!</p>
-      </header>
+      </div>
       <div style={{ display: 'flex', justifyContent: 'center', gap: 9, flexWrap: 'wrap', margin: '18px 0' }}>
         {pets.map((item, index) => (
           <button key={item.id} onClick={() => changePet(index)} aria-pressed={pet === index}
