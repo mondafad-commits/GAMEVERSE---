@@ -65,7 +65,8 @@ export default function DrawingGame({ onBack }: { onBack: () => void }) {
         <div><h3>💫 الملصقات</h3><div className="drawing-stickers">{stickers.map(s=><button key={s} onClick={()=>setSticker(s)} className={sticker===s?'active':''}>{s}</button>)}</div></div>
         <div className="drawing-selected">الملصق المختار: <b>{sticker}</b></div>
         <button className="drawing-add" onClick={add}><Sparkles size={17}/> أضيفي إلى لوحتي</button>
-        <button className="drawing-reset" onClick={reset}><RotateCcw size={15}/> لوحة جديدة</button>\n        <button className="drawing-reset" onClick={saveArtwork}><Download size={15}/> احفظي لوحتي</button>
+        <button className="drawing-reset" onClick={reset}><RotateCcw size={15}/> لوحة جديدة</button>
+        <button className="drawing-reset" onClick={saveArtwork}><Download size={15}/> احفظي لوحتي</button>
       </section>
     </div>
     <p className="drawing-note">احفظي لوحتك كصورة وشاركيها مع العائلة والصديقات 💜</p>
