@@ -16,7 +16,7 @@ export default function DrawingGame({ onBack }: { onBack: () => void }) {
   };
   const reset = () => setItems([]);
   const saveArtwork = () => {
-    const safeTitle = (title || 'لوحتي الجميلة').replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char] || char));
+    const safeTitle = (title || 'لوحتي الجميلة').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;');
     const decorations = items.map(item =>
       `<text x="${item.x * 8}" y="${55 + item.y * 4.3}" text-anchor="middle" dominant-baseline="middle" font-size="${item.size * 1.35}">${item.emoji}</text>`
     ).join('');
