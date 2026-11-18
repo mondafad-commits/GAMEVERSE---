@@ -4,7 +4,13 @@ import { ArrowRight, RotateCcw, Sparkles, Trophy } from 'lucide-react';
 const gems = ['💎','🌸','🦋','🍓','🌈','🧁','⭐','🐬'];
 type Tile = { id:number; gem:string };
 function makeDeck(): Tile[] {
-  return [...gems,...gems].map((gem,id)=>({id,gem})).sort(()=>Math.random()-.5);
+  const deck = [...gems,...gems].map((gem,id)=>({id,gem}));
+  // Fisher–Yates: uniform shuffle without the bias of sort(Math.random).
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+  return deck;
 }
 export default function JewelGame({onBack}:{onBack:()=>void}) {
   const [deck,setDeck]=useState<Tile[]>(makeDeck);
