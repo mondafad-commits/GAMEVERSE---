@@ -27,7 +27,7 @@
 .race-track{margin:28px 0 20px;padding:20px;border-radius:22px;background:#faf7ff;text-align:right}
 .race-lane{display:grid;grid-template-columns:90px 1fr 48px;align-items:center;gap:10px;margin:18px 0}.race-name{font-size:13px;font-weight:800}
 .race-road{height:44px;border-radius:14px;background:repeating-linear-gradient(90deg,#e9e0f2 0 18px,#fff 18px 30px);position:relative;overflow:hidden}
-.race-car{position:absolute;top:3px;font-size:30px;transition:right .25s ease;transform:translateX(50%)}.race-car.rival{filter:hue-rotate(35deg)}
+.race-car{position:absolute;top:3px;font-size:30px;transition:left .25s ease;transform:translateX(-50%)}.race-car.rival{filter:hue-rotate(35deg)}
 .race-lane b{font-size:13px;color:#76558f}.race-finish{font-size:12px;color:#8d779d;text-align:left}
 .race-go,.race-result button{border:0;border-radius:999px;padding:14px 28px;background:linear-gradient(100deg,#9d5bd0,#e26eaa);color:white;font-weight:900;font-size:17px;cursor:pointer;box-shadow:0 8px 22px #b45ca944}
 .race-result{display:grid;gap:14px;justify-items:center;color:#70438c;font-size:19px}.race-result button{font-size:14px}
