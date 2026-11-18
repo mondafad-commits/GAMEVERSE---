@@ -18,8 +18,14 @@ export default function PetGame({ onBack }: { onBack: () => void }) {
   const [message, setMessage] = useState('مرحباً! أنا أنتظر صديقتي الجديدة 💜');
   const [careCount, setCareCount] = useState(0);
 
-  const care = (kind: keyof Needs, amount: number, text: string) => {
-    setNeeds(old => ({ ...old, [kind]: Math.min(100, Math.max(0, old[kind] + amount)) }));
+  const care = (changes: Partial<Record<keyof Needs, number>>, text: string) => {
+    setNeeds(old => {
+      const next = { ...old };
+      (Object.keys(changes) as (keyof Needs)[]).forEach(key => {
+        next[key] = Math.min(100, Math.max(0, old[key] + (changes[key] ?? 0)));
+      });
+      return next;
+    });
     setMessage(text);
     setCareCount(value => value + 1);
   };
@@ -77,10 +83,10 @@ export default function PetGame({ onBack }: { onBack: () => void }) {
           ))}
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(125px,1fr))', gap: 10, marginTop: 20 }}>
-          <button onClick={() => care('hunger', 22, 'لذيذ! شكراً على الطعام 🍎')} style={actionStyle}><Utensils size={18}/> أطعميه</button>
-          <button onClick={() => care('happiness', 22, 'يا لها من لعبة ممتعة! 🎾')} style={actionStyle}><Heart size={18}/> العبي معه</button>
-          <button onClick={() => care('cleanliness', 24, 'أصبح نظيفاً ولامعاً! 🫧')} style={actionStyle}><Droplets size={18}/> نظّفيه</button>
-          <button onClick={() => care('energy', 20, 'وقت الراحة أعاده نشيطاً! 🌙')} style={actionStyle}><Sparkles size={18}/> وقت الراحة</button>
+          <button onClick={() => care({ hunger: 25, cleanliness: -5 }, 'لذيذ! شبع صديقك، لكن حان وقت تنظيفه لاحقاً 🍎')} style={actionStyle}><Utensils size={18}/> أطعميه</button>
+          <button onClick={() => care({ happiness: 24, energy: -12, hunger: -5 }, 'يا لها من لعبة ممتعة! لقد أسعدته، لكنه يحتاج إلى الراحة والطعام 🎾')} style={actionStyle}><Heart size={18}/> العبي معه</button>
+          <button onClick={() => care({ cleanliness: 25, energy: -4 }, 'أصبح نظيفاً ولامعاً! أحسنتِ الاعتناء به 🫧')} style={actionStyle}><Droplets size={18}/> نظّفيه</button>
+          <button onClick={() => care({ energy: 25, hunger: -8 }, 'وقت الراحة أعاده نشيطاً! لكنه سيجوع بعد النوم 🌙')} style={actionStyle}><Sparkles size={18}/> وقت الراحة</button>
         </div>
         <div style={{ marginTop: 16, color: '#765d8b', fontWeight: 800 }}>🌟 مرات الاعتناء بصديقك: {careCount}</div>
       </section>
