@@ -87,3 +87,27 @@
 .race-arcade .race-result button{background:linear-gradient(110deg,#2877d7,#a84fe1);color:#fff}
 @keyframes race-road-move{to{background-position-y:55px}}
 @media(max-width:520px){.race-controls{grid-template-columns:48px 1fr 82px 48px;gap:6px}.race-controls button{min-height:50px}.race-view-switch button{font-size:9px;padding:9px 8px}.race-opponent{grid-template-columns:75px 1fr 34px}.race-back{position:absolute;top:10px;right:10px}.race-screen{padding-top:58px}}
+
+
+/* Rebuilt continuous-driving race */
+.race-real .race-arcade{width:min(100%,900px);background:linear-gradient(145deg,#172344,#10172d);border:1px solid #ffffff25;color:#fff;text-align:right;padding:clamp(14px,3vw,28px)}
+.race-real .race-panel .race-head h2{color:#fff}
+.race-real-hud{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 12px}
+.race-real-hud span{background:#ffffff10;border:1px solid #ffffff1b;border-radius:11px;padding:10px 7px;text-align:center;color:#c8d8f5;font-size:11px}
+.race-real-hud b{color:#fff;font-size:16px;margin-inline:4px}
+.race-canvas-wrap{width:100%;height:clamp(350px,75vw,560px);max-height:560px;overflow:hidden;border-radius:18px;border:2px solid #ffffff35;background:#182a3b;box-shadow:inset 0 0 25px #0006}
+.race-canvas-wrap canvas{display:block;width:100%;height:100%;touch-action:none}
+.race-nitro-meter{display:grid;grid-template-columns:75px 1fr 42px;align-items:center;gap:9px;margin:14px 2px;color:#cbd8f2;font-size:10px}
+.race-nitro-meter>div{height:10px;border-radius:20px;background:#ffffff1b;overflow:hidden}
+.race-nitro-meter i{display:block;height:100%;border-radius:20px;background:linear-gradient(90deg,#6c9eff,#d96bff);transition:width .12s}
+.race-nitro-meter b{text-align:left;color:#fff;font-size:10px}
+.race-real-controls{grid-template-columns:58px minmax(100px,1fr) 92px 58px;gap:8px;margin-top:12px}
+.race-real-controls button{min-height:60px;touch-action:none;user-select:none;-webkit-user-select:none}
+.race-real-controls .race-steer{background:#263d69;color:#fff;font-size:22px}
+.race-real-controls .race-accelerate{background:linear-gradient(110deg,#2877d7,#40b8db);color:#fff;font-size:13px}
+.race-real-controls .race-nitro{background:linear-gradient(110deg,#a84fe1,#ec68b2);color:#fff;font-size:12px}
+.race-restart{display:flex;justify-content:center}
+.race-restart button{border:0;border-radius:13px;padding:14px 30px;background:linear-gradient(110deg,#2877d7,#a84fe1);color:white;font:inherit;font-weight:800;cursor:pointer}
+.race-real-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;color:#aebedc;font-size:10px;line-height:1.8}
+.race-real-foot button{background:#ffffff10;border:1px solid #ffffff20;border-radius:9px;padding:8px 12px;color:#fff;font:inherit;font-size:10px;cursor:pointer;white-space:nowrap}
+@media(max-width:520px){.race-real .race-screen{padding:58px 8px 20px}.race-real .race-view-switch button{font-size:9px;padding:8px 7px}.race-real-controls{grid-template-columns:48px minmax(80px,1fr) 72px 48px;gap:5px}.race-real-controls button{min-height:56px}.race-real-controls .race-accelerate{font-size:11px}.race-real-controls .race-steer{font-size:18px}.race-real-hud span{font-size:9px;padding:8px 3px}.race-real-hud b{font-size:13px}.race-real-foot{font-size:9px}}
