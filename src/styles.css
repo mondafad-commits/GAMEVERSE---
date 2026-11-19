@@ -39,3 +39,51 @@
 @media(max-width:760px){.drawing-layout{grid-template-columns:1fr}.drawing-canvas{min-height:390px}.drawing-intro{align-items:flex-start;flex-direction:column}.drawing-intro input{max-width:none;width:100%}.drawing-level{display:none}}@media(max-width:480px){.drawing-game{padding:18px 4% 35px}.drawing-canvas{min-height:350px}.drawing-tools{padding:17px}.drawing-top>div{gap:5px}.drawing-top b{font-size:12px}.drawing-top small{font-size:8px}}
 
 .art>button{cursor:pointer;transition:transform .18s,background .18s,color .18s}.art>button:hover{transform:scale(1.1)}.art>button.favorited{background:#fff;color:#d94c91;text-shadow:0 1px 2px #0002}
+
+
+/* Dual-view arcade racing */
+.race-screen{background:radial-gradient(ellipse at 50% 0%,#263f75,#090e20 70%);color:#fff;min-height:100vh;padding:72px 14px 28px}
+.race-arcade{width:min(100%,850px);background:linear-gradient(145deg,#172344,#10172d);border:1px solid #ffffff25;color:#fff;text-align:right;padding:clamp(16px,3vw,28px)}
+.race-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.race-panel .race-head h2{color:#fff;margin:5px 0 12px}
+.race-view-switch{display:flex;gap:7px;background:#080f22;padding:5px;border-radius:13px}
+.race-view-switch button{border:1px solid transparent;border-radius:9px;background:transparent;color:#c6d4f5;padding:10px 12px;font:inherit;font-size:11px;cursor:pointer}
+.race-view-switch button.active{background:#3766b9;color:white;border-color:#77a8ff}
+.race-hud{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.race-hud span{flex:1;min-width:90px;background:#ffffff0c;border:1px solid #ffffff18;border-radius:10px;padding:9px;font-size:11px;color:#c6d4f5}
+.race-hud b{color:#fff;margin-right:5px}
+.race-world{height:clamp(270px,48vw,390px);position:relative;overflow:hidden;border-radius:18px;background:linear-gradient(#6da8d0 0%,#b8d6d9 38%,#34764d 39%,#17452f 100%);border:2px solid #ffffff25}
+.race-sky{position:absolute;inset:0 0 auto;height:43%;font-size:35px;padding:15px 25px;display:flex;justify-content:space-between}
+.race-sky i{font-style:normal;font-size:27px}
+.race-road-arcade{position:absolute;inset:25% 0 0;overflow:hidden;background:linear-gradient(90deg,#256046,#357c4f 17%,#343943 18%,#242a35 82%,#357c4f 83%,#256046)}
+.race-road-arcade:before,.race-road-arcade:after{content:'';position:absolute;top:0;bottom:0;width:5px;background:#f8f0d2}
+.race-road-arcade:before{left:18%}.race-road-arcade:after{right:18%}
+.race-road-lines{position:absolute;inset:0 33%;display:flex;justify-content:space-between}
+.race-road-lines i{width:5px;height:100%;background:repeating-linear-gradient(to bottom,#fff 0 28px,transparent 28px 55px);animation:race-road-move .45s linear infinite}
+.race-player,.race-traffic{position:absolute;bottom:15%;font-size:clamp(36px,8vw,57px);z-index:3;transform:translateX(-50%);transition:left .18s ease;filter:drop-shadow(0 7px 5px #0008)}
+.race-traffic{top:12%;bottom:auto;font-size:clamp(28px,6vw,43px);filter:drop-shadow(0 5px 4px #0008)}
+.race-dashboard{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:2px;color:#ffffff8a;white-space:nowrap}
+.race-world.top .race-road-arcade{inset:0;background:linear-gradient(90deg,#347b4d 0 18%,#292e39 18% 82%,#347b4d 82%)}
+.race-world.top .race-road-arcade:before,.race-world.top .race-road-arcade:after{display:none}
+.race-world.top .race-road-lines{inset:0 33%}
+.race-world.top .race-player{bottom:7%}
+.race-world.top .race-traffic{top:12%}
+.race-world.top .race-sky{height:0;padding:0}
+.race-world.top .race-dashboard{display:none}
+.race-progress{position:absolute;bottom:0;right:0;left:0;height:7px;background:#ffffff55;z-index:5}
+.race-progress span{display:block;height:100%;background:linear-gradient(90deg,#41e6a2,#f4e56b);transition:width .2s}
+.race-progress-label{position:absolute;bottom:12px;right:10px;left:10px;display:flex;justify-content:space-between;font-size:9px;color:#fff;text-shadow:0 2px 5px #000}
+.race-opponent{display:grid;grid-template-columns:90px 1fr 40px;align-items:center;gap:10px;margin:15px 0;font-size:11px;color:#d4def8}
+.race-opponent>div{height:9px;background:#ffffff1b;border-radius:20px;overflow:hidden}
+.race-opponent i{display:block;height:100%;background:linear-gradient(90deg,#a56cf2,#ef78bb);border-radius:20px;transition:width .2s}
+.race-controls{display:grid;grid-template-columns:58px 1fr 100px 58px;gap:9px;margin-top:18px}
+.race-controls button{border:0;border-radius:13px;min-height:54px;font:inherit;font-weight:800;cursor:pointer}
+.race-steer{background:#263d69;color:#fff;font-size:20px}
+.race-accelerate{background:linear-gradient(110deg,#2877d7,#40b8db);color:#fff;font-size:14px}
+.race-nitro{background:linear-gradient(110deg,#a84fe1,#ec68b2);color:#fff;font-size:12px}
+.race-nitro:disabled{opacity:.35;cursor:not-allowed}
+.race-arcade .race-hint{color:#9cadd0;text-align:center;line-height:1.8}
+.race-arcade .race-result{color:#fff;margin-top:18px}
+.race-arcade .race-result button{background:linear-gradient(110deg,#2877d7,#a84fe1);color:#fff}
+@keyframes race-road-move{to{background-position-y:55px}}
+@media(max-width:520px){.race-controls{grid-template-columns:48px 1fr 82px 48px;gap:6px}.race-controls button{min-height:50px}.race-view-switch button{font-size:9px;padding:9px 8px}.race-opponent{grid-template-columns:75px 1fr 34px}.race-back{position:absolute;top:10px;right:10px}.race-screen{padding-top:58px}}
