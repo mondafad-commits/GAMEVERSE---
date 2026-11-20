@@ -1,0 +1,17 @@
+{
+  "id":"./",
+  "name":"GAMEVERSE - عالم آمنة",
+  "short_name":"عالم آمنة",
+  "description":"ألعاب فردية آمنة وممتعة للأطفال",
+  "lang":"ar",
+  "dir":"rtl",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "orientation":"portrait",
+  "background_color":"#100d25",
+  "theme_color":"#100d25",
+  "icons":[
+    {"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
