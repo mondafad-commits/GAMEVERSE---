@@ -49,8 +49,14 @@ export default function RaceGame({ onBack }: Props) {
         g.score += Math.round(g.speed * dt * 18);
         g.stripe += g.speed * dt * 460;
         g.spawn -= dt;
-        if (g.spawn <= 0) { g.obstacles.push({lane:Math.floor(Math.random()*3)-1,y:-60,kind:Math.random()>.25?0:1,passed:false}); g.spawn=1.15+Math.random()*1.05; }
-        g.obstacles.forEach(o => { o.y += g.speed*dt*390; if (!o.passed && o.y>450) { o.passed=true; g.score+=35; } if (Math.abs(o.lane-g.lane)<.48 && o.y>390 && o.y<490 && g.crash<=0) { g.crash=1.1; g.speed*=.25; g.score=Math.max(0,g.score-50); } });
+        if (g.spawn <= 0) { g.obstacles.push({lane:Math.floor(Math.random()*3)-1,y:-60,kind:Math.random()>.78?2:(Math.random()>.5?0:1),passed:false}); g.spawn=.9+Math.random()*.85; }
+        g.obstacles.forEach(o => {
+          o.y += g.speed*dt*390;
+          const nearPlayer = Math.abs(o.lane-g.lane)<.48 && o.y>390 && o.y<490;
+          if (o.kind===2 && !o.passed && nearPlayer) { o.passed=true; g.score+=150; g.nitro=Math.min(100,g.nitro+22); }
+          if (!o.passed && o.y>450) { o.passed=true; if(o.kind!==2) g.score+=35; }
+          if (o.kind!==2 && nearPlayer && g.crash<=0) { g.crash=1.1; g.speed*=.25; g.score=Math.max(0,g.score-50); }
+        });
         g.obstacles = g.obstacles.filter(o=>o.y<620);
         if (g.crash>0) g.crash-=dt;
         if (g.distance>=100) {g.distance=100;g.finished=true;g.won=true;}
@@ -66,13 +72,21 @@ export default function RaceGame({ onBack }: Props) {
         ctx.fillStyle='#333947';ctx.beginPath();ctx.moveTo(188,235);ctx.lineTo(232,235);ctx.lineTo(405,560);ctx.lineTo(15,560);ctx.closePath();ctx.fill();
         ctx.strokeStyle='#fff2d2';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(188,235);ctx.lineTo(15,560);ctx.moveTo(232,235);ctx.lineTo(405,560);ctx.stroke();
         for(let i=0;i<9;i++){const y=245+((i*48+(g.stripe*1.3)%48));const t=(y-235)/325;const x1=210- (1-t)*17;const x2=210+(1-t)*17;ctx.strokeStyle='#f8f4de';ctx.lineWidth=1+t*3;ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();}
-        g.obstacles.forEach(o=>{const t=Math.max(0,Math.min(1,(o.y+60)/620));const x=210+o.lane*105*t;drawCar(x,245+t*270,18+t*26,31+t*34,o.kind?'#f5a33b':'#e85b76');});
+        g.obstacles.forEach(o=>{
+          const t=Math.max(0,Math.min(1,(o.y+60)/620)); const x=210+o.lane*105*t;
+          if(o.kind===2){ctx.save();ctx.font=`bold ${Math.round(15+t*22)}px sans-serif`;ctx.textAlign='center';ctx.fillText('⭐',x,245+t*270);ctx.restore();}
+          else drawCar(x,245+t*270,18+t*26,31+t*34,o.kind===1?'#f5a33b':'#e85b76');
+        });
         drawCar(210+g.lane*105,475,46,82,g.crash>0?'#ff765e':'#43d6e8',true);
       } else {
         ctx.fillStyle='#303744';ctx.fillRect(58,0,304,h);
         ctx.fillStyle='#fff1d1';ctx.fillRect(62,0,5,h);ctx.fillRect(353,0,5,h);
         ctx.fillStyle='#f7f0d0';for(let y=-70+(g.stripe%90);y<h;y+=90){ctx.fillRect(157,y,5,52);ctx.fillRect(258,y,5,52);}
-        g.obstacles.forEach(o=>{const x=210+o.lane*100;drawCar(x,o.y,42,69,o.kind?'#f5a33b':'#e85b76');});
+        g.obstacles.forEach(o=>{
+          const x=210+o.lane*100;
+          if(o.kind===2){ctx.save();ctx.font='bold 30px sans-serif';ctx.textAlign='center';ctx.fillText('⭐',x,o.y+25);ctx.restore();}
+          else drawCar(x,o.y,42,69,o.kind===1?'#f5a33b':'#e85b76');
+        });
         drawCar(210+g.lane*100,465,48,82,g.crash>0?'#ff765e':'#43d6e8',true);
       }
       // speed overlay
@@ -115,7 +129,7 @@ export default function RaceGame({ onBack }: Props) {
         <button className="race-nitro" onPointerDown={hold('nitro',true)} onPointerUp={hold('nitro',false)} onPointerLeave={hold('nitro',false)} onPointerCancel={hold('nitro',false)}>⚡ نيترو</button>
         <button className="race-steer" onPointerDown={hold('right',true)} onPointerUp={hold('right',false)} onPointerCancel={hold('right',false)}>➡️</button>
       </div>}
-      <div className="race-real-foot"><span>امسكي زر البنزين للقيادة · بدّلي المسار لتفادي السيارات</span><button onClick={reset}>إعادة ضبط</button></div>
+      <div className="race-real-foot"><span>اجمعي ⭐ لزيادة النقاط والنيترو · تفادي السيارات المنافسة</span><button onClick={reset}>إعادة ضبط</button></div>
     </section>
   </main>;
 }
